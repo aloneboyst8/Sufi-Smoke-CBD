@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 180" role="img" aria-labelledby="title desc">
+  <title id="title">Sufi Smoke &amp; CBD</title>
+  <desc id="desc">A forest green and soft beige botanical logo with a leaf and flowing smoke line.</desc>
+  <g transform="translate(32 26)">
+    <circle cx="64" cy="64" r="62" fill="#23483b"/>
+    <path d="M43 83c4-29 20-48 50-58 2 29-13 50-50 58Z" fill="#d9c7a7"/>
+    <path d="M45 80c16-17 30-31 47-48" fill="none" stroke="#23483b" stroke-linecap="round" stroke-width="3"/>
+    <path d="M77 105c-7-13-3-24 10-31 13-8 16-18 8-31" fill="none" stroke="#d9c7a7" stroke-linecap="round" stroke-width="4"/>
+    <path d="M96 110c-6-10-3-19 7-25 11-7 14-15 8-25" fill="none" stroke="#d9c7a7" stroke-linecap="round" stroke-width="3" opacity=".8"/>
+  </g>
+  <g fill="#23483b">
+    <text x="178" y="91" font-family="Georgia, 'Times New Roman', serif" font-size="48" letter-spacing="1">Sufi Smoke</text>
+    <text x="181" y="128" font-family="Poppins, Arial, sans-serif" font-size="23" font-weight="700" letter-spacing="5">&amp; CBD</text>
+  </g>
+  <path d="M181 143h260" fill="none" stroke="#c87542" stroke-linecap="round" stroke-width="3"/>
+</svg>
