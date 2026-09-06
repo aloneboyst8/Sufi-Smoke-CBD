@@ -45,15 +45,6 @@ function openFaqModal() {
 
 function closeFaqModal() { setModalState(faqModal, false); }
 
-function moveFooterSlide(direction) {
-	const slider = document.querySelector('#storeFooterSlider');
-	if (!slider) return;
-	const card = slider.querySelector('.footer-slide-card');
-	const gap = Number.parseFloat(getComputedStyle(slider).gap) || 20;
-	const distance = card ? card.getBoundingClientRect().width + gap : slider.clientWidth * 0.85;
-	slider.scrollBy({ left: direction * distance, behavior: 'smooth' });
-}
-
 function moveReviewSlide(direction) {
 	if (!reviewSlider) return;
 	const cards = [...reviewSlider.querySelectorAll('.review-card')];
@@ -65,7 +56,7 @@ function moveReviewSlide(direction) {
 }
 
 // The page's existing inline controls need these functions on window.
-Object.assign(window, { openPolicyModal, closePolicyModal, openFaqModal, closeFaqModal, moveFooterSlide, moveReviewSlide });
+Object.assign(window, { openPolicyModal, closePolicyModal, openFaqModal, closeFaqModal, moveReviewSlide });
 
 [policyModal, faqModal].forEach((modal) => {
 	modal?.addEventListener('click', (event) => {
@@ -94,6 +85,27 @@ if (menuToggle && navMenu) {
 			menuToggle.setAttribute('aria-label', 'Open navigation menu');
 		});
 	});
+}
+
+document.querySelectorAll('.review-source').forEach((source) => {
+	source.querySelector('b').textContent = 'Customer feedback';
+	source.querySelector('span').textContent = 'Shared with Sufi Smoke & CBD';
+});
+const reviewEyebrow = document.querySelector('#reviews .eyebrow');
+const reviewHeading = document.querySelector('#reviews h2');
+if (reviewEyebrow) reviewEyebrow.lastChild.textContent = ' Customer feedback';
+if (reviewHeading) reviewHeading.innerHTML = 'What our <em>customers say</em>';
+
+const outOfScopeReply = "I'm Sufi AI, the assistant for Sufi Smoke & CBD. I can help with our products, lab testing, shipping, orders, policies, and general CBD information. I can't help with unrelated topics.";
+const medicalSafetyReply = 'I can share general educational information about CBD, but I cannot diagnose conditions, prescribe treatment, or recommend replacing medication. Please consult a qualified healthcare professional for personal medical advice.';
+const approvedTopicPattern = /\b(sufi|cbd|hemp|smoke|gummy|gummies|oil|tincture|vape|flower|accessor|product|ingredient|availab|lab|coa|thc|shipping|delivery|order|track|return|refund|wholesale|store|contact|policy|faq|wellness|dosage|dose|effect|legal)\b/i;
+const unrelatedTopicPattern = /\b(politic|election|government|cricket|football|phone|iphone|android|computer|gaming|game|programming|javascript|python|celebrity|weather|homework|assignment|stock market|news|president)\b/i;
+const medicalTopicPattern = /\b(diagnos|cure|treat|disease|cancer|diabetes|prescription|medication|medicine|replace my|symptom)\b/i;
+
+function getAssistantGuardrail(message) {
+	if (medicalTopicPattern.test(message)) return medicalSafetyReply;
+	if (unrelatedTopicPattern.test(message) && !approvedTopicPattern.test(message)) return outOfScopeReply;
+	return '';
 }
 
 /* The assistant keeps the n8n Chat Trigger contract isolated from page controls. */
@@ -155,7 +167,16 @@ if (menuToggle && navMenu) {
 	async function sendMessage(text) {
 		const message = escapeText(text);
 		if (!message || isSending) return;
-		isSending = true; status.textContent = ''; sendButton.disabled = true; addMessage(message, 'user'); setTyping(true);
+		isSending = true; status.textContent = ''; sendButton.disabled = true; addMessage(message, 'user');
+		const guardrailReply = getAssistantGuardrail(message);
+		if (guardrailReply) {
+			addMessage(guardrailReply, 'ai');
+			isSending = false;
+			sendButton.disabled = false;
+			input.focus();
+			return;
+		}
+		setTyping(true);
 		try {
 			const response = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ action: 'sendMessage', sessionId, chatInput: message }) });
 			if (!response.ok) throw new Error(`Chat service responded with ${response.status}.`);

@@ -331,6 +331,33 @@ body { background:#faf9f6; color:var(--ink); }
 .sufi-chatbot.sufi-chatbot-dark .sufi-message.user .sufi-bubble { background:linear-gradient(145deg,#d29a74,#b97854); color:#172a23; }
 .sufi-chatbot.sufi-chatbot-dark .sufi-message.user .sufi-bubble:after { border-bottom-color:#b97854; }
 
+/* Final production design system: neutral canvas, deep emerald accents. */
+:root { --ink:#111111; --green:#174d3b; --sage:#dce9e0; --mint:#f2f6f3; --sand:#f1e7dc; --orange:#a96b48; --muted:#5f6368; --line:#e1e5e2; --white:#ffffff; }
+body { background:#fff; color:#111; font-family:Manrope,Poppins,sans-serif; }
+.site-header { background:rgba(255,255,255,.94); border-bottom:1px solid #edf0ee; box-shadow:0 8px 30px rgba(17,17,17,.05); }
+.hero { background:#f3f7f4; }.hero-visual { background:#dce9e0; }.glow { background:#f0dfc9; }
+.standards,.benefit-band,.site-footer { background:#174d3b; }.products-section { background:#fff; }.faq-trigger-section { background:#f7f9f7; }.policy-strip { background:#f1e7dc; }
+.lead,.section-note,.review-card p,.image-product-card > p:not(.product-type),.faq-trigger-section .faq-header-side p { color:#5f6368; }
+.button,.image-product-card .buy-link { background:#174d3b; border-color:#174d3b; }.button:hover { background:#111; border-color:#111; }
+.image-product-card,.review-card { background:#fff; border:1px solid #e1e5e2; box-shadow:0 10px 30px rgba(17,17,17,.045); }
+.image-product-card:hover,.review-card:hover { border-color:#a9c7b5; box-shadow:0 20px 45px rgba(23,77,59,.13); }
+.image-product-art { aspect-ratio:4 / 3; height:auto; }.image-product-art img { object-fit:cover; }
+.image-product-card h3 { color:#111; font-weight:700; }.image-product-card .product-type { color:#174d3b; font-weight:700; }
+.benefit-band .eyebrow,.benefit-list p { color:#d5e3da; }.benefit-list strong { color:#fff; }
+.faq-trigger-section .faq-header-side h2,.faq-list details summary { color:#111; }.faq-list details { border:1px solid #e1e5e2; box-shadow:0 8px 22px rgba(17,17,17,.04); transition:box-shadow .3s,transform .3s; }.faq-list details:hover { box-shadow:0 14px 28px rgba(23,77,59,.1); transform:translateY(-2px); }
+.review-source b { color:#174d3b; }.rating { color:#a96b48; }
+#sufi-chatbot { --sufi-chat-ink:#111; --sufi-chat-muted:#5f6368; --sufi-chat-accent:#174d3b; --sufi-chat-surface:#fff; --sufi-chat-soft:#f3f6f4; --sufi-chat-shadow:0 24px 70px rgba(17,17,17,.18); }
+.sufi-chatbot.sufi-chatbot-dark { --sufi-chat-ink:#f4f7f5; --sufi-chat-muted:#b9c6bf; --sufi-chat-accent:#8fc2a5; --sufi-chat-surface:#192a22; --sufi-chat-soft:#263b30; }
+.sufi-chat-launcher { background:#fff; border:1px solid #c8d8ce; box-shadow:0 14px 38px rgba(23,77,59,.18); color:#174d3b; }.sufi-launcher-icon { background:#174d3b; }.sufi-chatbot.sufi-chatbot-dark .sufi-chat-launcher { background:#20362b; border-color:#557362; color:#f4f7f5; }
+.sufi-chat-header { background:#fff; border-bottom:1px solid #e3e8e4; color:#111; }.sufi-chatbot.sufi-chatbot-dark .sufi-chat-header { background:#192a22; border-bottom-color:#3b5547; color:#f4f7f5; }
+.sufi-chat-header h2 { font-weight:800; }.sufi-message.ai .sufi-bubble { background:#eef5f0; border-color:#cddfd2; color:#172a22; }.sufi-message.user .sufi-bubble { background:#174d3b; }.sufi-send-button { background:#174d3b; }
+.sufi-chat-form { background:#f7f9f7; border-color:#dce5df; }.sufi-chat-form textarea { color:#111; font-weight:600; }.sufi-quick-replies button { border-color:#9fbbaa; color:#174d3b; font-weight:700; }
+.sufi-chatbot.sufi-chatbot-dark .sufi-message.ai .sufi-bubble { background:#263b30; border-color:#4b6856; color:#f4f7f5; }.sufi-chatbot.sufi-chatbot-dark .sufi-send-button { background:#8fc2a5; color:#14251d; }
+.sufi-chat-status { font-weight:600; }
+.sufi-chat-launcher:before { border-color:#79aa8c; }.sufi-online-dot { background:#4d9d69; }
+.faq-list details[open] { animation:faq-open .28s var(--ease-premium); }
+@keyframes faq-open { from { opacity:.7; transform:translateY(-3px); } to { opacity:1; transform:none; } }
+
 @media (max-width:800px) {
   .container { width:calc(100% - 40px); }
   .site-header { padding:10px 20px; }
