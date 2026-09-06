@@ -130,7 +130,7 @@ function getAssistantGuardrail(message) {
 	if (!sessionId) { sessionId = crypto.randomUUID ? crypto.randomUUID() : `sufi-${Date.now()}-${Math.random().toString(16).slice(2)}`; sessionStorage.setItem(sessionKey, sessionId); }
 
 	const escapeText = (value) => String(value ?? '').trim();
-	const scrollToLatest = () => { messages.scrollTo({ top: messages.scrollHeight, behavior: 'smooth' }); };
+	const scrollToLatest = () => { requestAnimationFrame(() => messages.scrollTo({ top: messages.scrollHeight, behavior: 'smooth' })); };
 	function addMessage(text, type) {
 		const item = document.createElement('div');
 		item.className = `sufi-message ${type}`;
@@ -161,9 +161,9 @@ function getAssistantGuardrail(message) {
 	function openChat() {
 		root.classList.add('is-open'); launcher.setAttribute('aria-expanded', 'true'); panel.setAttribute('aria-hidden', 'false');
 		if (!messages.children.length) addMessage('Welcome to Sufi Smoke & CBD. I can help with products, lab testing, and choosing the right ritual.', 'ai');
-		setTimeout(() => input.focus(), 180);
+		setTimeout(() => { input.focus({ preventScroll: true }); scrollToLatest(); }, 180);
 	}
-	function closeChat() { root.classList.remove('is-open'); launcher.setAttribute('aria-expanded', 'false'); panel.setAttribute('aria-hidden', 'true'); launcher.focus(); }
+	function closeChat() { root.classList.remove('is-open'); launcher.setAttribute('aria-expanded', 'false'); panel.setAttribute('aria-hidden', 'true'); launcher.focus({ preventScroll: true }); }
 	async function sendMessage(text) {
 		const message = escapeText(text);
 		if (!message || isSending) return;
@@ -187,7 +187,7 @@ function getAssistantGuardrail(message) {
 		} catch (error) {
 			status.textContent = 'Connection issue. Please try again, or contact us on WhatsApp.';
 			console.error('Sufi AI chat error:', error);
-		} finally { setTyping(false); isSending = false; sendButton.disabled = false; input.focus(); }
+		} finally { setTyping(false); isSending = false; sendButton.disabled = false; input.focus({ preventScroll: true }); }
 	}
 	launcher.addEventListener('click', openChat); closeButton.addEventListener('click', closeChat);
 	form.addEventListener('submit', (event) => { event.preventDefault(); const message = input.value; input.value = ''; input.style.height = 'auto'; sendMessage(message); });

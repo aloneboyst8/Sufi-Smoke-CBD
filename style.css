@@ -358,6 +358,137 @@ body { background:#fff; color:#111; font-family:Manrope,Poppins,sans-serif; }
 .faq-list details[open] { animation:faq-open .28s var(--ease-premium); }
 @keyframes faq-open { from { opacity:.7; transform:translateY(-3px); } to { opacity:1; transform:none; } }
 
+/* Production chatbot redesign: emerald, gold and warm-white only. */
+#sufi-chatbot {
+	--sufi-emerald:#123c32;
+	--sufi-gold:#c9a45c;
+	--sufi-cream:#fafaf7;
+	--sufi-text:#171a18;
+	--sufi-muted:#66706b;
+	--sufi-border:#dfe5df;
+	--sufi-radius:20px;
+	--sufi-shadow:0 24px 65px rgba(18,60,50,.2);
+	bottom:max(24px, env(safe-area-inset-bottom));
+	color:var(--sufi-text);
+	font-family:Manrope,Poppins,sans-serif;
+	right:max(24px, env(safe-area-inset-right));
+}
+#sufi-chatbot.sufi-chatbot-dark {
+	--sufi-cream:#1b2924;
+	--sufi-text:#f5f7f4;
+	--sufi-muted:#b1bdb7;
+	--sufi-border:#3d5047;
+	--sufi-shadow:0 24px 65px rgba(0,0,0,.42);
+}
+#sufi-chatbot .sufi-chat-launcher {
+	animation:sufi-luxury-breathe 4.6s ease-in-out infinite;
+	background:var(--sufi-emerald);
+	border:1px solid rgba(201,164,92,.48);
+	box-shadow:0 14px 34px rgba(18,60,50,.28), inset 0 1px rgba(255,255,255,.13);
+	color:#fff;
+	min-height:58px;
+	padding-right:19px;
+	transition:transform .2s ease,box-shadow .2s ease;
+}
+#sufi-chatbot .sufi-chat-launcher:before {
+	animation:sufi-luxury-ring 3.8s ease-in-out infinite;
+	border:1px solid rgba(201,164,92,.65);
+	inset:-6px;
+	opacity:.45;
+}
+#sufi-chatbot .sufi-chat-launcher:hover {
+	box-shadow:0 18px 42px rgba(18,60,50,.36),0 0 0 1px rgba(201,164,92,.5);
+	transform:translateY(-2px) scale(1.025);
+}
+#sufi-chatbot .sufi-chat-launcher:active { transform:translateY(1px) scale(.975); }
+#sufi-chatbot .sufi-launcher-icon { background:var(--sufi-gold); color:var(--sufi-emerald); }
+#sufi-chatbot .sufi-launcher-label { font-size:12px; font-weight:800; }
+#sufi-chatbot .sufi-chat-panel {
+	background:var(--sufi-cream);
+	border:1px solid var(--sufi-border);
+	border-radius:var(--sufi-radius);
+	box-shadow:var(--sufi-shadow);
+	height:min(640px,calc(100svh - 112px));
+	overflow:hidden;
+	overscroll-behavior:contain;
+	transform:translateY(14px) scale(.96);
+	transition:opacity .22s ease,transform .28s cubic-bezier(.22,1,.36,1),visibility .22s;
+	width:min(410px,calc(100vw - 48px));
+}
+#sufi-chatbot.is-open .sufi-chat-panel { transform:translateY(0) scale(1); }
+#sufi-chatbot .sufi-chat-header {
+	background:var(--sufi-emerald);
+	border:0;
+	color:#fff;
+	min-height:76px;
+	padding:17px 17px 16px;
+}
+#sufi-chatbot .sufi-avatar { background:var(--sufi-gold); color:var(--sufi-emerald); height:42px; width:42px; }
+#sufi-chatbot .sufi-chat-header h2 { font-size:15px; font-weight:800; letter-spacing:-.02em; }
+#sufi-chatbot .sufi-chat-header p { color:#d5e6dc; font-size:10px; font-weight:600; }
+#sufi-chatbot .sufi-online-dot { background:var(--sufi-gold); box-shadow:0 0 0 3px rgba(201,164,92,.16); }
+#sufi-chatbot .sufi-chat-actions button { color:#dce9e1; transition:background .18s,transform .18s; }
+#sufi-chatbot .sufi-chat-actions button:hover { background:rgba(255,255,255,.12); transform:scale(1.06); }
+#sufi-chatbot .sufi-chat-messages {
+	background:var(--sufi-cream);
+	gap:14px;
+	min-height:0;
+	overscroll-behavior:contain;
+	padding:18px 16px;
+	scrollbar-color:rgba(18,60,50,.3) transparent;
+}
+#sufi-chatbot .sufi-message { animation:sufi-message-enter .28s cubic-bezier(.22,1,.36,1) both; max-width:86%; min-width:0; }
+#sufi-chatbot .sufi-bubble { border-radius:15px; font-size:12px; font-weight:500; line-height:1.65; max-width:100%; overflow-wrap:anywhere; padding:11px 13px; white-space:pre-wrap; word-break:break-word; }
+#sufi-chatbot .sufi-message.ai .sufi-bubble {
+	background:#f1f3ee;
+	border:1px solid #d6dfd5;
+	border-left:3px solid var(--sufi-gold);
+	border-radius:15px 15px 15px 5px;
+	box-shadow:0 5px 16px rgba(18,60,50,.06);
+	color:var(--sufi-text);
+}
+#sufi-chatbot .sufi-message.user .sufi-bubble {
+	background:var(--sufi-emerald);
+	border:1px solid var(--sufi-emerald);
+	border-radius:15px 15px 5px 15px;
+	box-shadow:0 6px 14px rgba(18,60,50,.16);
+	color:#fff;
+	font-weight:600;
+}
+#sufi-chatbot .sufi-typing { align-items:center; background:#f1f3ee; border:1px solid #d6dfd5; border-left:3px solid var(--sufi-gold); border-radius:15px 15px 15px 5px; display:flex; gap:5px; padding:13px 15px; }
+#sufi-chatbot .sufi-typing span { animation:sufi-dot 1.15s ease-in-out infinite; background:var(--sufi-emerald); height:5px; width:5px; }
+#sufi-chatbot .sufi-chat-status { color:#9a4b3d; font-size:10px; padding:0 17px; }
+#sufi-chatbot .sufi-chat-composer { background:var(--sufi-cream); border-top:1px solid var(--sufi-border); padding:11px 13px max(11px,env(safe-area-inset-bottom)); }
+#sufi-chatbot .sufi-quick-replies { gap:7px; margin-bottom:10px; padding-bottom:1px; }
+#sufi-chatbot .sufi-quick-replies button { background:transparent; border:1px solid rgba(18,60,50,.32); color:var(--sufi-emerald); font-size:10px; font-weight:700; padding:7px 10px; transition:background .18s,transform .18s,border-color .18s; }
+#sufi-chatbot .sufi-quick-replies button:hover { background:rgba(201,164,92,.13); border-color:var(--sufi-gold); transform:translateY(-1px); }
+#sufi-chatbot .sufi-chat-form { background:#fff; border:1px solid #cfdad2; border-radius:15px; box-shadow:0 4px 12px rgba(18,60,50,.04); padding:6px; transition:border-color .2s,box-shadow .2s; }
+#sufi-chatbot .sufi-chat-form:focus-within { border-color:var(--sufi-emerald); box-shadow:0 0 0 3px rgba(18,60,50,.1); }
+#sufi-chatbot .sufi-chat-form textarea { color:var(--sufi-text); font:600 12px/1.5 Manrope,Poppins,sans-serif; max-height:96px; min-height:34px; }
+#sufi-chatbot .sufi-send-button { background:var(--sufi-emerald); border:1px solid var(--sufi-emerald); border-radius:11px; color:var(--sufi-gold); flex-basis:36px; height:36px; transition:background .18s,transform .18s,box-shadow .18s; }
+#sufi-chatbot .sufi-send-button:hover { background:#1b5a48; box-shadow:0 5px 12px rgba(18,60,50,.2); transform:translateY(-2px); }
+#sufi-chatbot .sufi-send-button:active { transform:translateY(1px) scale(.94); }
+#sufi-chatbot .sufi-chat-disclaimer { color:var(--sufi-muted); font-size:8px; line-height:1.4; }
+#sufi-chatbot.sufi-chatbot-dark .sufi-chat-messages,#sufi-chatbot.sufi-chatbot-dark .sufi-chat-composer { background:var(--sufi-cream); }
+#sufi-chatbot.sufi-chatbot-dark .sufi-message.ai .sufi-bubble,#sufi-chatbot.sufi-chatbot-dark .sufi-typing { background:#263a31; border-color:#40594c; color:#f5f7f4; }
+#sufi-chatbot.sufi-chatbot-dark .sufi-chat-form { background:#22362c; border-color:#4a6354; }
+#sufi-chatbot.sufi-chatbot-dark .sufi-chat-form textarea { color:#f5f7f4; }
+#sufi-chatbot.sufi-chatbot-dark .sufi-quick-replies button { border-color:#6c8d77; color:#d8b978; }
+@keyframes sufi-luxury-breathe { 0%,100% { box-shadow:0 14px 34px rgba(18,60,50,.28),inset 0 1px rgba(255,255,255,.13); } 50% { box-shadow:0 17px 38px rgba(18,60,50,.34),inset 0 1px rgba(255,255,255,.18); } }
+@keyframes sufi-luxury-ring { 0%,100% { opacity:.25; transform:scale(.99); } 50% { opacity:.58; transform:scale(1.025); } }
+@keyframes sufi-message-enter { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+@keyframes sufi-dot { 0%,60%,100% { opacity:.3; transform:translateY(0); } 30% { opacity:1; transform:translateY(-3px); } }
+@media (max-width:600px) {
+	#sufi-chatbot { bottom:max(12px,env(safe-area-inset-bottom)); right:max(12px,env(safe-area-inset-right)); }
+	#sufi-chatbot .sufi-chat-panel { bottom:70px; height:min(620px,calc(100svh - 92px)); max-height:calc(100svh - 92px); width:calc(100vw - 24px); }
+	#sufi-chatbot .sufi-chat-launcher { min-height:56px; padding:6px; }
+	#sufi-chatbot .sufi-launcher-label { display:none; }
+}
+@media (prefers-reduced-motion:reduce) {
+	#sufi-chatbot .sufi-chat-launcher,#sufi-chatbot .sufi-chat-launcher:before,#sufi-chatbot .sufi-message,#sufi-chatbot .sufi-typing span { animation:none; }
+	#sufi-chatbot .sufi-chat-panel,#sufi-chatbot .sufi-chat-launcher,#sufi-chatbot .sufi-send-button { transition:none; }
+}
+
 @media (max-width:800px) {
   .container { width:calc(100% - 40px); }
   .site-header { padding:10px 20px; }
