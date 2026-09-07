@@ -969,3 +969,65 @@ body { background:var(--bg-sage); color:var(--text-main); line-height:1.6; }
   50% { transform:translateY(-12px) rotate(.5deg); }
 }
 @media (prefers-reduced-motion:reduce) { #home .hero-product-image { animation:none; } }
+
+/* FAQ motion layer: calm staggered reveal and tactile accordion states. */
+.faq-trigger-section .faq-layout { align-items:start; }
+.faq-trigger-section .faq-list {
+  max-height:480px;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  padding:4px 12px 4px 2px;
+  scroll-behavior:smooth;
+  scrollbar-color:var(--accent-copper) transparent;
+}
+.faq-trigger-section .faq-list::-webkit-scrollbar { width:6px; }
+.faq-trigger-section .faq-list::-webkit-scrollbar-thumb { background:var(--accent-copper); border-radius:10px; }
+.faq-trigger-section .faq-list details {
+  animation:faq-card-in .65s var(--ease-premium) both;
+  transform-origin:top center;
+}
+.faq-trigger-section .faq-list details:nth-child(2) { animation-delay:70ms; }
+.faq-trigger-section .faq-list details:nth-child(3) { animation-delay:140ms; }
+.faq-trigger-section .faq-list details:nth-child(4) { animation-delay:210ms; }
+.faq-trigger-section .faq-list details:nth-child(5) { animation-delay:280ms; }
+.faq-trigger-section .faq-list details:nth-child(6) { animation-delay:350ms; }
+.faq-trigger-section .faq-list details:nth-child(7) { animation-delay:420ms; }
+.faq-trigger-section .faq-list details:hover { transform:translateX(4px); }
+.faq-trigger-section .faq-list summary {
+  list-style:none;
+  outline:none;
+  padding-right:28px;
+  position:relative;
+}
+.faq-trigger-section .faq-list summary::-webkit-details-marker { display:none; }
+.faq-trigger-section .faq-list summary::after {
+  color:var(--accent-copper);
+  content:'+';
+  font-size:1.35rem;
+  font-weight:400;
+  line-height:1;
+  position:absolute;
+  right:0;
+  top:0;
+  transition:transform .3s var(--ease-premium);
+}
+.faq-trigger-section .faq-list details[open] summary::after { transform:rotate(45deg); }
+.faq-trigger-section .faq-list details[open] p { animation:faq-answer-in .35s var(--ease-premium) both; }
+.faq-trigger-section .faq-list summary:focus-visible { border-radius:6px; box-shadow:0 0 0 3px rgba(197,139,101,.25); }
+@keyframes faq-card-in {
+  from { opacity:0; transform:translateY(16px) scale(.98); }
+  to { opacity:1; transform:none; }
+}
+@keyframes faq-answer-in {
+  from { opacity:0; transform:translateY(-5px); }
+  to { opacity:1; transform:none; }
+}
+@media (max-width:768px) {
+  .faq-trigger-section .faq-list { max-height:430px; padding-right:4px; }
+  .faq-trigger-section .faq-list details:hover { transform:none; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .faq-trigger-section .faq-list details,
+  .faq-trigger-section .faq-list details[open] p { animation:none; }
+  .faq-trigger-section .faq-list details:hover { transform:none; }
+}
