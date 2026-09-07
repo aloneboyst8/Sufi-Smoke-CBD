@@ -1,201 +1,194 @@
-const menuToggle = document.querySelector('.menu-toggle');
-const navMenu = document.querySelector('.nav-menu');
-const policyModal = document.querySelector('#policyModal');
-const faqModal = document.querySelector('#faqModal');
-const faqModalList = document.querySelector('.faq-modal-list');
-const reviewSlider = document.querySelector('#reviewSlider');
+/* ==========================================================================
+   SUFI SMOKE & CBD - INTERACTIVE CONTROLS & AI CHATBOT LOGIC
+   ========================================================================== */
 
-document.documentElement.classList.add('js-enabled');
-window.requestAnimationFrame(() => document.body.classList.add('page-ready'));
+document.addEventListener('DOMContentLoaded', () => {
+  // Mobile Menu Toggle
+  const menuToggle = document.querySelector('.menu-toggle');
+  const navMenu = document.querySelector('.nav-menu');
 
-const revealObserver = 'IntersectionObserver' in window ? new IntersectionObserver((entries, observer) => {
-	entries.forEach((entry) => {
-		if (!entry.isIntersecting) return;
-		entry.target.classList.add('is-visible');
-		observer.unobserve(entry.target);
-	});
-}, { rootMargin: '0px 0px -10% 0px', threshold: 0.08 }) : null;
+  if (menuToggle && navMenu) {
+    menuToggle.addEventListener('click', () => {
+      const expanded = menuToggle.getAttribute('aria-expanded') === 'true';
+      menuToggle.setAttribute('aria-expanded', !expanded);
+      navMenu.style.display = expanded ? 'none' : 'flex';
+      navMenu.style.flexDirection = 'column';
+      navMenu.style.position = 'absolute';
+      navMenu.style.top = '70px';
+      navMenu.style.left = '0';
+      navMenu.style.width = '100%';
+      navMenu.style.background = '#E8F3ED';
+      navMenu.style.padding = '20px';
+      navMenu.style.boxShadow = '0 10px 20px rgba(0,0,0,0.1)';
+    });
+  }
 
-document.querySelectorAll('.section-heading, .product-card, .benefit-list > div, .review-card, .faq-header-side, .policy-strip, .site-footer .footer-col').forEach((element, index) => {
-	element.classList.add('scroll-reveal');
-	element.style.setProperty('--reveal-delay', `${Math.min(index % 4, 3) * 70}ms`);
-	revealObserver?.observe(element);
+  // Reviews Slider Control
+  window.moveReviewSlide = function(direction) {
+    const slider = document.getElementById('reviewSlider');
+    if (slider) {
+      const scrollAmount = 360 * direction;
+      slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  // FAQ Modal Handling
+  window.openFaqModal = function() {
+    const modal = document.getElementById('faqModal');
+    if (modal) {
+      modal.classList.add('active');
+      modal.setAttribute('aria-hidden', 'false');
+      
+      // Populate full FAQ list in modal if empty
+      const modalList = modal.querySelector('.faq-modal-list');
+      const originalFaqs = document.querySelectorAll('.faq-list details');
+      if (modalList && modalList.children.length === 0) {
+        originalFaqs.forEach(faq => {
+          const clone = faq.cloneNode(true);
+          modalList.appendChild(clone);
+        });
+      }
+    }
+  };
+
+  window.closeFaqModal = function() {
+    const modal = document.getElementById('faqModal');
+    if (modal) {
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+  };
+
+  // Policy Modal Handling
+  window.openPolicyModal = function() {
+    const modal = document.getElementById('policyModal');
+    if (modal) {
+      modal.classList.add('active');
+      modal.setAttribute('aria-hidden', 'false');
+    }
+  };
+
+  window.closePolicyModal = function() {
+    const modal = document.getElementById('policyModal');
+    if (modal) {
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+  };
+
+  // Close modals on outside click
+  window.addEventListener('click', (e) => {
+    const faqModal = document.getElementById('faqModal');
+    const policyModal = document.getElementById('policyModal');
+    if (e.target === faqModal) closeFaqModal();
+    if (e.target === policyModal) closePolicyModal();
+  });
+
+  // ==========================================
+  // SUFI AI ASSISTANT WIDGET & THEME TOGGLE
+  // ==========================================
+  const chatLauncher = document.querySelector('.sufi-chat-launcher');
+  const chatPanel = document.getElementById('sufi-chat-panel');
+  const chatClose = document.querySelector('.sufi-chat-close');
+  const themeToggleBtn = document.querySelector('.sufi-theme-toggle');
+  const chatForm = document.querySelector('.sufi-chat-form');
+  const chatInput = document.getElementById('sufi-chat-input');
+  const chatMessages = document.querySelector('.sufi-chat-messages');
+  const quickReplyBtns = document.querySelectorAll('.sufi-quick-replies button');
+
+  // Default Chat Mode setup (Starts in Dark Mode matching the sleek cosmic design or Light Mode based on preference)
+  let currentChatTheme = 'dark-mode';
+  chatPanel.classList.add(currentChatTheme);
+
+  // Toggle Assistant Window
+  if (chatLauncher && chatPanel) {
+    chatLauncher.addEventListener('click', () => {
+      const isOpen = chatPanel.classList.contains('active');
+      if (isOpen) {
+        chatPanel.classList.remove('active');
+        chatLauncher.setAttribute('aria-expanded', 'false');
+        chatPanel.setAttribute('aria-hidden', 'true');
+      } else {
+        chatPanel.classList.add('active');
+        chatLauncher.setAttribute('aria-expanded', 'true');
+        chatPanel.setAttribute('aria-hidden', 'false');
+        if (chatMessages.children.length === 0) {
+          appendMessage("Welcome to Sufi Smoke & CBD. I can help with products, lab testing, and choosing the right ritual.", 'ai-msg');
+        }
+      }
+    });
+  }
+
+  if (chatClose) {
+    chatClose.addEventListener('click', () => {
+      chatPanel.classList.remove('active');
+      chatLauncher.setAttribute('aria-expanded', 'false');
+      chatPanel.setAttribute('aria-hidden', 'true');
+    });
+  }
+
+  // Theme Toggle Button (Switches between Dark and White/Light mode instantly with clear contrast)
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', () => {
+      if (chatPanel.classList.contains('dark-mode')) {
+        chatPanel.classList.remove('dark-mode');
+        chatPanel.classList.add('light-mode');
+        currentChatTheme = 'light-mode';
+      } else {
+        chatPanel.classList.remove('light-mode');
+        chatPanel.classList.add('dark-mode');
+        currentChatTheme = 'dark-mode';
+      }
+    });
+  }
+
+  // Append Message Helper
+  function appendMessage(text, senderClass) {
+    const msgDiv = document.createElement('div');
+    msgDiv.classList.add('sufi-msg', senderClass);
+    msgDiv.textContent = text;
+    chatMessages.appendChild(msgDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  // Handle Quick Replies
+  quickReplyBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const question = btn.getAttribute('data-message');
+      appendMessage(question, 'user-msg');
+      processAiResponse(question);
+    });
+  });
+
+  // Handle Form Submission
+  if (chatForm) {
+    chatForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const text = chatInput.value.trim();
+      if (!text) return;
+      appendMessage(text, 'user-msg');
+      chatInput.value = '';
+      processAiResponse(text);
+    });
+  }
+
+  // Simulated Intelligent Assistant Response Engine
+  function processAiResponse(query) {
+    const q = query.toLowerCase();
+    let reply = "Thanks for reaching out! You can explore our trending lab-tested CBD oils, edibles, and accessories directly on the site, or message us on WhatsApp at +923101700551.";
+
+    if (q.includes('beginner') || q.includes('start')) {
+      reply = "For beginners, we recommend starting with our low-potency Daily Wellness CBD Oils or measured Gummies. Begin with the smallest serving on the label to see how your body responds.";
+    } else if (q.includes('choose') || q.includes('right product')) {
+      reply = "To choose the right product, consider your goal: oils for steady daily wellness, edibles for convenient calm, or botanical vapes for on-the-go relaxation.";
+    } else if (q.includes('lab') || q.includes('tested') || q.includes('analysis')) {
+      reply = "Yes! All our products are backed by third-party laboratory reports ensuring purity, quality, and accurate labeling.";
+    } else if (q.includes('shipping') || q.includes('delivery')) {
+      reply = "We offer secure, discreet delivery on all orders. Tracking details are provided once your package is dispatched.";
+    }
+
+    setTimeout(() => {
+      appendMessage(reply, 'ai-msg');
+    }, 600);
+  }
 });
-
-function setModalState(modal, isOpen) {
-	if (!modal) return;
-	modal.classList.toggle('is-open', isOpen);
-	modal.setAttribute('aria-hidden', String(!isOpen));
-	document.body.style.overflow = isOpen ? 'hidden' : '';
-}
-
-function openPolicyModal() { setModalState(policyModal, true); }
-function closePolicyModal() { setModalState(policyModal, false); }
-
-function openFaqModal() {
-	if (faqModalList && !faqModalList.children.length) {
-		document.querySelectorAll('.faq-list details').forEach((item) => {
-			const clone = item.cloneNode(true);
-			clone.classList.add('faq-item');
-			faqModalList.appendChild(clone);
-		});
-	}
-	setModalState(faqModal, true);
-}
-
-function closeFaqModal() { setModalState(faqModal, false); }
-
-function moveReviewSlide(direction) {
-	if (!reviewSlider) return;
-	const cards = [...reviewSlider.querySelectorAll('.review-card')];
-	if (!cards.length) return;
-	const current = Number(reviewSlider.dataset.activeReview || 0);
-	const next = Math.max(0, Math.min(cards.length - 1, current + direction));
-	reviewSlider.dataset.activeReview = String(next);
-	cards[next].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-}
-
-// The page's existing inline controls need these functions on window.
-Object.assign(window, { openPolicyModal, closePolicyModal, openFaqModal, closeFaqModal, moveReviewSlide });
-
-[policyModal, faqModal].forEach((modal) => {
-	modal?.addEventListener('click', (event) => {
-		if (event.target === modal) setModalState(modal, false);
-	});
-});
-
-document.addEventListener('keydown', (event) => {
-	if (event.key === 'Escape') {
-		closePolicyModal();
-		closeFaqModal();
-	}
-});
-
-if (menuToggle && navMenu) {
-	menuToggle.addEventListener('click', () => {
-		const isOpen = navMenu.classList.toggle('is-open');
-		menuToggle.setAttribute('aria-expanded', String(isOpen));
-		menuToggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
-	});
-
-	navMenu.querySelectorAll('a').forEach((link) => {
-		link.addEventListener('click', () => {
-			navMenu.classList.remove('is-open');
-			menuToggle.setAttribute('aria-expanded', 'false');
-			menuToggle.setAttribute('aria-label', 'Open navigation menu');
-		});
-	});
-}
-
-document.querySelectorAll('.review-source').forEach((source) => {
-	source.querySelector('b').textContent = 'Customer feedback';
-	source.querySelector('span').textContent = 'Shared with Sufi Smoke & CBD';
-});
-const reviewEyebrow = document.querySelector('#reviews .eyebrow');
-const reviewHeading = document.querySelector('#reviews h2');
-if (reviewEyebrow) reviewEyebrow.lastChild.textContent = ' Customer feedback';
-if (reviewHeading) reviewHeading.innerHTML = 'What our <em>customers say</em>';
-
-const outOfScopeReply = "I'm Sufi AI, the assistant for Sufi Smoke & CBD. I can help with our products, lab testing, shipping, orders, policies, and general CBD information. I can't help with unrelated topics.";
-const medicalSafetyReply = 'I can share general educational information about CBD, but I cannot diagnose conditions, prescribe treatment, or recommend replacing medication. Please consult a qualified healthcare professional for personal medical advice.';
-const approvedTopicPattern = /\b(sufi|cbd|hemp|smoke|gummy|gummies|oil|tincture|vape|flower|accessor|product|ingredient|availab|lab|coa|thc|shipping|delivery|order|track|return|refund|wholesale|store|contact|policy|faq|wellness|dosage|dose|effect|legal)\b/i;
-const unrelatedTopicPattern = /\b(politic|election|government|cricket|football|phone|iphone|android|computer|gaming|game|programming|javascript|python|celebrity|weather|homework|assignment|stock market|news|president)\b/i;
-const medicalTopicPattern = /\b(diagnos|cure|treat|disease|cancer|diabetes|prescription|medication|medicine|replace my|symptom)\b/i;
-
-function getAssistantGuardrail(message) {
-	if (medicalTopicPattern.test(message)) return medicalSafetyReply;
-	if (unrelatedTopicPattern.test(message) && !approvedTopicPattern.test(message)) return outOfScopeReply;
-	return '';
-}
-
-/* The assistant keeps the n8n Chat Trigger contract isolated from page controls. */
-(() => {
-	const root = document.querySelector('#sufi-chatbot');
-	if (!root) return;
-	const endpoint = 'https://siddhubilal.app.n8n.cloud/webhook/36506c70-6a6f-42cf-b982-53b83669a2d6/chat';
-	const launcher = root.querySelector('.sufi-chat-launcher');
-	const panel = root.querySelector('.sufi-chat-panel');
-	const closeButton = root.querySelector('.sufi-chat-close');
-	const themeButton = root.querySelector('.sufi-theme-toggle');
-	const messages = root.querySelector('.sufi-chat-messages');
-	const status = root.querySelector('.sufi-chat-status');
-	const form = root.querySelector('.sufi-chat-form');
-	const input = root.querySelector('#sufi-chat-input');
-	const sendButton = root.querySelector('.sufi-send-button');
-	const themeKey = 'sufi-chat-theme';
-	const sessionKey = 'sufi-chat-session';
-	let isSending = false;
-	let theme = localStorage.getItem(themeKey) || 'auto';
-	let sessionId = sessionStorage.getItem(sessionKey);
-	if (!sessionId) { sessionId = crypto.randomUUID ? crypto.randomUUID() : `sufi-${Date.now()}-${Math.random().toString(16).slice(2)}`; sessionStorage.setItem(sessionKey, sessionId); }
-
-	const escapeText = (value) => String(value ?? '').trim();
-	const scrollToLatest = () => { requestAnimationFrame(() => messages.scrollTo({ top: messages.scrollHeight, behavior: 'smooth' })); };
-	function addMessage(text, type) {
-		const item = document.createElement('div');
-		item.className = `sufi-message ${type}`;
-		const bubble = document.createElement('div');
-		bubble.className = 'sufi-bubble';
-		bubble.textContent = escapeText(text);
-		item.appendChild(bubble); messages.appendChild(item); scrollToLatest();
-	}
-	function setTyping(show) {
-		const existing = messages.querySelector('.sufi-typing');
-		if (show && !existing) {
-			const item = document.createElement('div'); item.className = 'sufi-message ai sufi-typing';
-			item.innerHTML = '<span></span><span></span><span></span>'; messages.appendChild(item); scrollToLatest();
-		} else if (!show && existing) existing.remove();
-	}
-	function responseText(payload) {
-		if (typeof payload === 'string') return payload;
-		if (Array.isArray(payload)) return responseText(payload[0]);
-		const candidates = [payload?.output, payload?.text, payload?.message, payload?.response, payload?.data?.output, payload?.data?.text, payload?.json?.output, payload?.json?.text];
-		const result = candidates.find((value) => typeof value === 'string' && value.trim());
-		return result || '';
-	}
-	function setTheme() {
-		const dark = theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-		root.classList.toggle('sufi-chatbot-dark', dark);
-		themeButton.setAttribute('aria-label', `Theme: ${theme}. Click to change`);
-	}
-	function openChat() {
-		root.classList.add('is-open'); launcher.setAttribute('aria-expanded', 'true'); panel.setAttribute('aria-hidden', 'false');
-		if (!messages.children.length) addMessage('Welcome to Sufi Smoke & CBD. I can help with products, lab testing, and choosing the right ritual.', 'ai');
-		setTimeout(() => { input.focus({ preventScroll: true }); scrollToLatest(); }, 180);
-	}
-	function closeChat() { root.classList.remove('is-open'); launcher.setAttribute('aria-expanded', 'false'); panel.setAttribute('aria-hidden', 'true'); launcher.focus({ preventScroll: true }); }
-	async function sendMessage(text) {
-		const message = escapeText(text);
-		if (!message || isSending) return;
-		isSending = true; status.textContent = ''; sendButton.disabled = true; addMessage(message, 'user');
-		const guardrailReply = getAssistantGuardrail(message);
-		if (guardrailReply) {
-			addMessage(guardrailReply, 'ai');
-			isSending = false;
-			sendButton.disabled = false;
-			input.focus();
-			return;
-		}
-		setTyping(true);
-		try {
-			const response = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ action: 'sendMessage', sessionId, chatInput: message }) });
-			if (!response.ok) throw new Error(`Chat service responded with ${response.status}.`);
-			const payload = await response.json();
-			const reply = responseText(payload);
-			if (!reply) throw new Error('The chat service returned an empty response.');
-			addMessage(reply, 'ai');
-		} catch (error) {
-			status.textContent = 'Connection issue. Please try again, or contact us on WhatsApp.';
-			console.error('Sufi AI chat error:', error);
-		} finally { setTyping(false); isSending = false; sendButton.disabled = false; input.focus({ preventScroll: true }); }
-	}
-	launcher.addEventListener('click', openChat); closeButton.addEventListener('click', closeChat);
-	form.addEventListener('submit', (event) => { event.preventDefault(); const message = input.value; input.value = ''; input.style.height = 'auto'; sendMessage(message); });
-	input.addEventListener('input', () => { input.style.height = 'auto'; input.style.height = `${Math.min(input.scrollHeight, 92)}px`; });
-	input.addEventListener('keydown', (event) => { if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); form.requestSubmit(); } });
-	root.querySelectorAll('.sufi-quick-replies button').forEach((button) => button.addEventListener('click', () => { input.value = button.dataset.message || ''; form.requestSubmit(); }));
-	themeButton.addEventListener('click', () => { theme = theme === 'auto' ? 'dark' : theme === 'dark' ? 'light' : 'auto'; localStorage.setItem(themeKey, theme); setTheme(); });
-	window.matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', setTheme);
-	document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && root.classList.contains('is-open')) closeChat(); });
-	setTheme();
-})();

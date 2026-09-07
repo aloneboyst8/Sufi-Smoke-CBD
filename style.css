@@ -650,7 +650,10 @@ body {
 }
 
 .sufi-chat-panel.active {
+  opacity:1;
+  pointer-events:auto;
   transform: scale(1);
+  visibility:visible;
 }
 
 /* Theme Modes for Chat Window */
