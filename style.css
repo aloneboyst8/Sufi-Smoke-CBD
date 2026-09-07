@@ -915,3 +915,57 @@ body {
     display: flex;
   }
 }
+
+/* Reference theme: sage canvas, deep forest structure, copper accents. */
+:root {
+  --bg-sage:#e8f3ed;
+  --primary-dark:#0d231a;
+  --accent-copper:#c58b65;
+  --text-main:#122820;
+  --text-muted:#4a5d55;
+  --card-bg:#f3f8f5;
+  --border-color:rgba(13,35,26,.12);
+}
+body { background:var(--bg-sage); color:var(--text-main); line-height:1.6; }
+.site-header { background:rgba(232,243,237,.9); border-bottom:1px solid var(--border-color); box-shadow:0 8px 24px rgba(13,35,26,.05); }
+.nav-link,.nav-link:hover,.nav-link.active { color:var(--text-main); }
+.nav-link:hover,.nav-link.active,.eyebrow,.image-product-card .product-type { color:var(--accent-copper); }
+.nav-link:after,.eyebrow span { background:var(--accent-copper); }
+.hero,#home.hero,#home .hero-visual,.products-section { background:var(--bg-sage); }
+.hero h1,.section-heading h2,.benefit-layout h2,.faq-intro h2,.faq-header-side h2 { color:var(--primary-dark); }
+.hero h1 em,.section-heading h2 em,.benefit-layout h2 em,.faq-header-side h2 i { color:var(--accent-copper); }
+.lead,.section-note,.review-card p,.image-product-card > p:not(.product-type),.faq-trigger-section .faq-header-side p { color:var(--text-muted); }
+.button { background:var(--primary-dark); border-color:var(--primary-dark); border-radius:30px; }
+.button:hover { background:var(--accent-copper); border-color:var(--accent-copper); }
+.standards { background:var(--primary-dark); }
+.standards-grid b,.stars,.rating { color:var(--accent-copper); }
+.image-product-card,.review-card { background:var(--white); border:1px solid var(--border-color); border-radius:20px; box-shadow:none; }
+.image-product-card:hover,.review-card:hover { border-color:var(--accent-copper); box-shadow:0 20px 40px rgba(13,35,26,.08); }
+.image-product-card h3 { color:var(--primary-dark); }
+.image-product-card .buy-link { background:var(--bg-sage); color:var(--primary-dark); border-radius:20px; }
+.image-product-card .buy-link:hover { background:var(--accent-copper); color:#fff; }
+.benefit-band { background:#dbebe2; color:var(--primary-dark); }
+.benefit-band .eyebrow,.benefit-list p { color:var(--text-muted); }
+.benefit-list > div { background:var(--white); border:1px solid var(--border-color); border-radius:14px; }
+.benefit-list b { color:var(--accent-copper); }
+.reviews .review-card { background:var(--card-bg); }
+.faq-trigger-section { background:var(--white); border-bottom:1px solid var(--border-color); border-top:1px solid var(--border-color); }
+.faq-trigger-section .faq-header-side h2,.faq-list details summary { color:var(--primary-dark); }
+.faq-list details { background:var(--card-bg); border:1px solid var(--border-color); border-radius:12px; }
+.faq-list details[open] { background:var(--white); border-color:var(--accent-copper); box-shadow:0 4px 15px rgba(197,139,101,.1); }
+.faq-list details p { color:var(--text-muted); }
+.policy-strip { background:#dbebe2; }
+.policy-badge { background:var(--primary-dark); }
+.policy-links,.policy-container a { color:var(--accent-copper); }
+.site-footer { background:var(--primary-dark); }
+.footer-col > p,.legal-col p,.footer-bottom-bar,.sec-col a { color:#a0aec0; }
+.legal-col h4,.footer-secretariat-section > h4 { color:var(--accent-copper); }
+.footer-social-icons a:hover,.footer-icon-link:hover { background:var(--accent-copper); border-color:var(--accent-copper); color:#fff; }
+.modal-overlay { background:rgba(13,35,26,.6); }
+.modal-content { background:var(--white); border-radius:24px; }
+#home .hero-product-image { animation:floatEffect 5s ease-in-out infinite; box-shadow:0 25px 50px rgba(13,35,26,.15); }
+@keyframes floatEffect {
+  0%,100% { transform:translateY(0) rotate(0deg); }
+  50% { transform:translateY(-12px) rotate(.5deg); }
+}
+@media (prefers-reduced-motion:reduce) { #home .hero-product-image { animation:none; } }
